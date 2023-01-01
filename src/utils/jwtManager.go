@@ -54,7 +54,7 @@ func getToken(c *gin.Context) (*jwt.Token, error) {
 
 func ExtractTokenFromRequest(c *gin.Context) string {
 	bearerToken := c.Request.Header.Get("Authorization")
-	splitToken := strings.Split(bearerToken, "")
+	splitToken := strings.Split(bearerToken, " ")
 	if len(splitToken) == 2 {
 		return splitToken[1]
 	}
