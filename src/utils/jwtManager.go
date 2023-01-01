@@ -5,25 +5,25 @@ import (
 	"fmt"
 	"strings"
 
-	"password-manager/src/model"
+	"password-manager/src/models"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gofrs/uuid"
 	"github.com/golang-jwt/jwt/v4"
 )
 
-func CurrentUser(context *gin.Context) (model.User, error) {
+func CurrentUser(context *gin.Context) (models.User, error) {
 	err := ValidateJWT(context)
 	if err != nil {
-		return model.User{}, err
+		return models.User{}, err
 	}
 	token, _ := getToken(context)
 	claims, _ := token.Claims.(jwt.MapClaims)
 	userId := claims["id"].(string)
 
-	user, err := model.FindUserById(uuid.Must(uuid.FromString(userId)))
+	user, err := models.FindUserById(uuid.Must(uuid.FromString(userId)))
 	if err != nil {
-		return model.User{}, err
+		return models.User{}, err
 	}
 	return user, nil
 }
