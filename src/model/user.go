@@ -2,21 +2,27 @@ package model
 
 import (
 	"password-manager/src/config/database"
+	"time"
 
 	"html"
 	"strings"
 
+	"github.com/gofrs/uuid"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
 type User struct {
 	gorm.Model
-	Username string `gorm:"size: 255;not null;unique" json:"username"`
-	Password string `gorm:"size: 255;not null;" json:"password"`
+	Id        uuid.UUID `gorm:"size: 128; not null;unique" json:"id"`
+	Username  string    `gorm:"size: 255;not null;unique" json:"username"`
+	Password  string    `gorm:"size: 255;not null;" json:"password"`
+	CreatedAt time.Time `gorm:"size 255;not null;"`
 }
 
 func (user *User) Save() (*User, error) {
+	user.Id = uuid.Must(uuid.NewV4())
+	user.CreatedAt = time.Now()
 	err := database.Database.Create(&user).Error
 	if err != nil {
 		return &User{}, err
@@ -42,6 +48,16 @@ func FindUserByUsername(username string) (User, error) {
 	var user User
 
 	err := database.Database.Where("username=?", username).Find(&user).Error
+	if err != nil {
+		return User{}, err
+	}
+	return user, nil
+}
+
+func FindUserById(id uuid.UUID) (User, error) {
+	var user User
+
+	err := database.Database.Where("id=?", id).Find(&user).Error
 	if err != nil {
 		return User{}, err
 	}
