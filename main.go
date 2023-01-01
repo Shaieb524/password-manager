@@ -6,6 +6,7 @@ import (
 
 	"password-manager/src/config/database"
 	"password-manager/src/controller"
+	"password-manager/src/middleware"
 	"password-manager/src/model"
 
 	"github.com/gin-gonic/gin"
@@ -31,8 +32,9 @@ func serveApplication() {
 	publicRoutes.POST("/register", controller.Register)
 	publicRoutes.POST("/login", controller.Login)
 
-	apiRoutes := router.Group("/api/v1")
-	apiRoutes.GET("/")
+	proctectedRoutes := router.Group("/api/v1")
+	proctectedRoutes.Use(middleware.JWTAuthentication())
+	proctectedRoutes.GET("/")
 
 	router.Run("localhost:1111")
 }
