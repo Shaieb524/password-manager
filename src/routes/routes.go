@@ -3,7 +3,8 @@ package routes
 import (
 	"log"
 	"os"
-	"password-manager/src/controllers"
+	"password-manager/src/controllers/accountPassword"
+	controllers "password-manager/src/controllers/auth"
 	"password-manager/src/middlewares"
 	"password-manager/src/providers/database"
 
@@ -23,7 +24,7 @@ func LoadDatabase() {
 	// database.Database.AutoMigrate(&models.AccountPassword{})
 }
 
-func SetupRoutesAndRun() *gin.Engine {
+func SetupRoutesAndRun(apC accountPassword.AccountPasswordController) *gin.Engine {
 	router := gin.Default()
 
 	router.GET("/health", func(c *gin.Context) {
@@ -36,9 +37,12 @@ func SetupRoutesAndRun() *gin.Engine {
 	publicRoutes.POST("/register", controllers.Register)
 	publicRoutes.POST("/login", controllers.Login)
 
-	proctectedRoutes := router.Group("/api/v1")
-	proctectedRoutes.Use(middlewares.JWTAuthentication())
-	proctectedRoutes.GET("/")
+	v1 := router.Group("/api/v1")
+	v1.Use(middlewares.JWTAuthentication())
+	apC.RegisterRoutes(v1)
+
+	// proctectedRoutes := router.Group("/api/v1")
+	// proctectedRoutes.POST("/accountPassword", controllers.CreatAccountPassword)
 
 	serverUrl := os.Getenv("SERVER_HOST") + ":" + os.Getenv("SERVER_PORT")
 	router.Run(serverUrl)
