@@ -1,6 +1,7 @@
 package accountPassword
 
 import (
+	"fmt"
 	"net/http"
 	"password-manager/src/models/database/accountPassword"
 	services "password-manager/src/services/accountPassword"
@@ -18,6 +19,7 @@ type accountPasswordController interface {
 }
 
 func (apC *AccountPasswordController) CreatAccountPassword(ctx *gin.Context) {
+	fmt.Println("apC: ", apC)
 	var accPassword *accountPassword.AccountPasswordModel
 
 	err := ctx.BindJSON(&accPassword)

@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"password-manager/src/controllers/accountPassword"
@@ -36,6 +37,7 @@ func SetupRoutesAndRun(apC accountPassword.AccountPasswordController) *gin.Engin
 	publicRoutes := router.Group("/auth")
 	authentication.RegisterRoutes(publicRoutes)
 
+	fmt.Println("apccccc :", apC)
 	apiV1 := router.Group("/api/v1")
 	apiV1.Use(middlewares.JWTAuthentication())
 	apC.RegisterRoutes(apiV1)

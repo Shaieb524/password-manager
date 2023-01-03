@@ -7,8 +7,9 @@ import (
 )
 
 func main() {
+	var apc accountPassword.AccountPasswordController
 	fmt.Println("Start bitch")
 	routes.LoadEnv()
 	routes.LoadDatabase()
-	routes.SetupRoutesAndRun(accountPassword.AccountPasswordController{})
+	routes.SetupRoutesAndRun(apc)
 }
