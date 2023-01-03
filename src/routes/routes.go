@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 	"password-manager/src/controllers/accountPassword"
-	controllers "password-manager/src/controllers/auth"
+	authentication "password-manager/src/controllers/auth"
 	"password-manager/src/middlewares"
 	"password-manager/src/providers/database"
 
@@ -34,15 +34,11 @@ func SetupRoutesAndRun(apC accountPassword.AccountPasswordController) *gin.Engin
 	})
 
 	publicRoutes := router.Group("/auth")
-	publicRoutes.POST("/register", controllers.Register)
-	publicRoutes.POST("/login", controllers.Login)
+	authentication.RegisterRoutes(publicRoutes)
 
-	v1 := router.Group("/api/v1")
-	v1.Use(middlewares.JWTAuthentication())
-	apC.RegisterRoutes(v1)
-
-	// proctectedRoutes := router.Group("/api/v1")
-	// proctectedRoutes.POST("/accountPassword", controllers.CreatAccountPassword)
+	apiV1 := router.Group("/api/v1")
+	apiV1.Use(middlewares.JWTAuthentication())
+	apC.RegisterRoutes(apiV1)
 
 	serverUrl := os.Getenv("SERVER_HOST") + ":" + os.Getenv("SERVER_PORT")
 	router.Run(serverUrl)
