@@ -1,7 +1,7 @@
 package models
 
 import (
-	"password-manager/src/config/database"
+	"password-manager/src/providers/database"
 
 	"html"
 	"strings"

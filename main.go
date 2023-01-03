@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"log"
 
-	"password-manager/src/config/database"
 	"password-manager/src/controllers"
 	"password-manager/src/middlewares"
 	"password-manager/src/models"
+	"password-manager/src/providers/database"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
