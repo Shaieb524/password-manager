@@ -54,6 +54,6 @@ func (apC *AccountPasswordController) RegisterRoutes(router *gin.RouterGroup) {
 }
 
 func (apC *AccountPasswordController) registerAccoutPasswordsRoutes(router *gin.RouterGroup) {
-	router.GET("/accountPassword", apC.CreatAccountPassword)
-	router.POST("/accountPassword", apC.GetAppPasswordById)
+	router.GET("/accountPassword", apC.GetAppPasswordById)
+	router.POST("/accountPassword", apC.CreatAccountPassword)
 }
