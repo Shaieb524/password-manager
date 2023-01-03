@@ -1,4 +1,4 @@
-package controllers
+package authentication
 
 import (
 	"net/http"
@@ -58,4 +58,13 @@ func Login(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"jwt": jwt})
+}
+
+func RegisterRoutes(router *gin.RouterGroup) {
+	registerAuthenticationRoutes(router)
+}
+
+func registerAuthenticationRoutes(router *gin.RouterGroup) {
+	router.POST("/register", Register)
+	router.POST("/login", Login)
 }
