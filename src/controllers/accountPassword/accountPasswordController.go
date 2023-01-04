@@ -17,7 +17,8 @@ type accountPasswordController interface {
 	GetAllAccountsPasswords(*gin.Context)
 	GetAppPasswordById(*gin.Context)
 	GetAppPasswordByServiceName(ctx *gin.Context)
-	EditAccountPassword(ctx *gin.Context)
+	EditServicePassword(ctx *gin.Context)
+	DeleteServicePassword(ctx *gin.Context)
 }
 
 func (apC *AccountPasswordController) CreatAccountPassword(ctx *gin.Context) {
@@ -86,12 +87,24 @@ func (apC *AccountPasswordController) EditAccountPassword(ctx *gin.Context) {
 		})
 	}
 
-	if accPassword, err := apC.service.EditAccountPassword(*accPassword); err != nil {
+	if accPassword, err := apC.service.EditServicePassword(*accPassword); err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"error": "Error creating item : " + err.Error(),
 		})
 	} else {
 		ctx.JSON(http.StatusCreated, accPassword)
+	}
+}
+
+func (apC *AccountPasswordController) DeleteServicePassword(ctx *gin.Context) {
+	accountName := ctx.Param("name")
+
+	if err := apC.service.DeleteServicePassword(accountName); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+	} else {
+		ctx.JSON(http.StatusAccepted, "done")
 	}
 }
 
@@ -102,9 +115,10 @@ func (apC *AccountPasswordController) RegisterRoutes(router *gin.RouterGroup) {
 func (apC *AccountPasswordController) registerAccoutPasswordsRoutes(router *gin.RouterGroup) {
 	router.POST("/accountPassword", apC.CreatAccountPassword)
 	router.GET("/accountPassword", apC.GetAllAccountsPasswords)
-	router.PATCH("/accountPassword", apC.EditAccountPassword)
 	// router.GET("/accountPassword/:id", apC.GetAppPasswordById)
 	router.GET("/accountPassword/:name", apC.GetAppPasswordByServiceName)
+	router.PATCH("/accountPassword", apC.EditAccountPassword)
+	router.DELETE("/accountPassword/:name", apC.DeleteServicePassword)
 }
 
 func ProvideModuleforDI(service *services.AccountPasswordService) *AccountPasswordController {

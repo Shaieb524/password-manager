@@ -60,6 +60,15 @@ func (repo *AccoutnPasswordRepo) EditAccountPassword(accPass AccountPassword) (*
 	return &ap, nil
 }
 
+func (repo *AccoutnPasswordRepo) DeleteByName(serviceName string) error {
+	var ap AccountPassword
+	if err := repo.db.First(&ap, "service=?", serviceName).Error; err != nil {
+		return err
+	}
+	repo.db.Delete(&ap)
+	return nil
+}
+
 // func (ap AccountPassword) BeforeSave() error {
 // 	passwordHash, err := bcrypt.GenerateFromPassword([]byte(ap.Password), bcrypt.DefaultCost)
 // 	if err != nil {
