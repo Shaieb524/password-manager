@@ -2,21 +2,21 @@ package authentication
 
 import (
 	"net/http"
-	"password-manager/src/models"
+	"password-manager/src/models/database/user"
 	"password-manager/src/utils"
 
 	"github.com/gin-gonic/gin"
 )
 
 func Register(c *gin.Context) {
-	var input models.AuthenticationInput
+	var input user.AuthenticationInput
 
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": err.Error})
 		return
 	}
 
-	user := models.User{
+	user := user.User{
 		Username: input.UserName,
 		Password: input.Password,
 	}
@@ -32,14 +32,14 @@ func Register(c *gin.Context) {
 }
 
 func Login(c *gin.Context) {
-	var input models.AuthenticationInput
+	var input user.AuthenticationInput
 
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	user, err := models.FindUserByUsername(input.UserName)
+	user, err := user.FindUserByUsername(input.UserName)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

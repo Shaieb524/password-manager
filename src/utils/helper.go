@@ -2,7 +2,7 @@ package utils
 
 import (
 	"os"
-	"password-manager/src/models"
+	"password-manager/src/models/database/user"
 	"strconv"
 	"time"
 
@@ -11,7 +11,7 @@ import (
 
 var privateKey = []byte(os.Getenv("JWT_PRIVATE_KEY"))
 
-func GenerateJWT(user models.User) (string, error) {
+func GenerateJWT(user user.User) (string, error) {
 	tokenTTL, _ := strconv.Atoi(os.Getenv("TOKEN_TTL"))
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"id":  user.ID,

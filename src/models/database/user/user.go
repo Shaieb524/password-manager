@@ -1,4 +1,4 @@
-package models
+package user
 
 import (
 	"password-manager/src/providers/database"
