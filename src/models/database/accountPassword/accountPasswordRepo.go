@@ -23,6 +23,16 @@ func (repo *AccoutnPasswordRepo) CreateAccountPassword(accPass AccountPassword) 
 	return &accPass, nil
 }
 
+func (repo *AccoutnPasswordRepo) GetAllAccountsPasswords() (*[]AccountPassword, error) {
+	var accountsPasswords *[]AccountPassword
+
+	err := repo.db.Find(&accountsPasswords).Error
+	if err != nil {
+		return &[]AccountPassword{}, err
+	}
+	return accountsPasswords, nil
+}
+
 func (repo *AccoutnPasswordRepo) GetByID(id string) (*AccountPassword, error) {
 	var ap AccountPassword
 	if err := repo.db.First(&ap, "id=?", id).Error; err != nil {

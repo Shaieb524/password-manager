@@ -14,6 +14,7 @@ type AccountPasswordController struct {
 
 type accountPasswordController interface {
 	CreateAccountPassword(*gin.Context)
+	GetAllAccountsPasswords(*gin.Context)
 	GetAppPasswordById(*gin.Context)
 	GetAppPasswordByServiceName(ctx *gin.Context)
 }
@@ -35,6 +36,17 @@ func (apC *AccountPasswordController) CreatAccountPassword(ctx *gin.Context) {
 		})
 	} else {
 		ctx.JSON(http.StatusCreated, accPassword)
+	}
+}
+
+func (apC *AccountPasswordController) GetAllAccountsPasswords(ctx *gin.Context) {
+
+	if accPasswords, err := apC.service.GetAllAccountsPasswords(); err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Error creating item : " + err.Error(),
+		})
+	} else {
+		ctx.JSON(http.StatusCreated, accPasswords)
 	}
 }
 
@@ -68,6 +80,7 @@ func (apC *AccountPasswordController) RegisterRoutes(router *gin.RouterGroup) {
 
 func (apC *AccountPasswordController) registerAccoutPasswordsRoutes(router *gin.RouterGroup) {
 	router.POST("/accountPassword", apC.CreatAccountPassword)
+	router.GET("/accountPassword", apC.GetAllAccountsPasswords)
 	// router.GET("/accountPassword/:id", apC.GetAppPasswordById)
 	router.GET("/accountPassword/:name", apC.GetAppPasswordByServiceName)
 }
