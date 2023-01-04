@@ -1,7 +1,6 @@
 package services
 
 import (
-	"fmt"
 	"password-manager/src/models/database/accountPassword"
 )
 
@@ -15,7 +14,6 @@ type accountPasswordService interface {
 }
 
 func (apS *AccountPasswordService) CreateAccountPassword(accPass accountPassword.AccountPassword) (*accountPassword.AccountPassword, error) {
-	fmt.Println("aps: ", apS)
 	return apS.repo.CreateAccountPassword(accPass)
 }
 

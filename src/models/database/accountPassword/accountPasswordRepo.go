@@ -1,8 +1,6 @@
 package accountPassword
 
 import (
-	"fmt"
-
 	"gorm.io/gorm"
 )
 
@@ -18,8 +16,6 @@ func ProvideAccountPasswordRepo(DB *gorm.DB) AccoutnPasswordRepo {
 }
 
 func (repo *AccoutnPasswordRepo) CreateAccountPassword(accPass AccountPassword) (*AccountPassword, error) {
-	fmt.Println("repo : ", repo)
-	fmt.Println("accPass : ", accPass)
 	err := repo.db.Create(&accPass).Error
 	if err != nil {
 		return &AccountPassword{}, err
