@@ -13,6 +13,7 @@ type accountPasswordService interface {
 	GetAllAccountsPasswords()
 	GetAppPasswordById(id string)
 	GetAppPasswordByServiceName(serviceName string)
+	EditAccountPassword(accPass accountPassword.AccountPassword)
 }
 
 func (apS *AccountPasswordService) CreateAccountPassword(accPass accountPassword.AccountPassword) (*accountPassword.AccountPassword, error) {
@@ -29,6 +30,10 @@ func (apS *AccountPasswordService) GetAppPasswordById(id string) (*accountPasswo
 
 func (apS *AccountPasswordService) GetAppPasswordByServiceName(serviceName string) (*accountPassword.AccountPassword, error) {
 	return apS.repo.GetByServiceName(serviceName)
+}
+
+func (apS *AccountPasswordService) EditAccountPassword(accPass accountPassword.AccountPassword) (*accountPassword.AccountPassword, error) {
+	return apS.repo.EditAccountPassword(accPass)
 }
 
 func ProvideModuleforDI(repo *accountPassword.AccoutnPasswordRepo) *AccountPasswordService {
