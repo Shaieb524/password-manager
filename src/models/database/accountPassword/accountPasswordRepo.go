@@ -31,6 +31,14 @@ func (repo *AccoutnPasswordRepo) GetByID(id string) (*AccountPassword, error) {
 	return &ap, nil
 }
 
+func (repo *AccoutnPasswordRepo) GetByServiceName(serviceName string) (*AccountPassword, error) {
+	var ap AccountPassword
+	if err := repo.db.First(&ap, "service=?", serviceName).Error; err != nil {
+		return nil, err
+	}
+	return &ap, nil
+}
+
 // func (ap AccountPassword) BeforeSave() error {
 // 	passwordHash, err := bcrypt.GenerateFromPassword([]byte(ap.Password), bcrypt.DefaultCost)
 // 	if err != nil {

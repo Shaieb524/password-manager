@@ -15,6 +15,7 @@ type AccountPasswordController struct {
 type accountPasswordController interface {
 	CreateAccountPassword(*gin.Context)
 	GetAppPasswordById(*gin.Context)
+	GetAppPasswordByServiceName(ctx *gin.Context)
 }
 
 func (apC *AccountPasswordController) CreatAccountPassword(ctx *gin.Context) {
@@ -49,13 +50,26 @@ func (apC *AccountPasswordController) GetAppPasswordById(ctx *gin.Context) {
 	}
 }
 
+func (apC *AccountPasswordController) GetAppPasswordByServiceName(ctx *gin.Context) {
+	accountName := ctx.Param("name")
+
+	if appPassword, err := apC.service.GetAppPasswordByServiceName(accountName); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+	} else {
+		ctx.JSON(http.StatusOK, appPassword)
+	}
+}
+
 func (apC *AccountPasswordController) RegisterRoutes(router *gin.RouterGroup) {
 	apC.registerAccoutPasswordsRoutes(router)
 }
 
 func (apC *AccountPasswordController) registerAccoutPasswordsRoutes(router *gin.RouterGroup) {
-	router.GET("/accountPassword/:id", apC.GetAppPasswordById)
 	router.POST("/accountPassword", apC.CreatAccountPassword)
+	// router.GET("/accountPassword/:id", apC.GetAppPasswordById)
+	router.GET("/accountPassword/:name", apC.GetAppPasswordByServiceName)
 }
 
 func ProvideModuleforDI(service *services.AccountPasswordService) *AccountPasswordController {

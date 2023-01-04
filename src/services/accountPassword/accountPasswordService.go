@@ -10,7 +10,8 @@ type AccountPasswordService struct {
 
 type accountPasswordService interface {
 	CreatAccountPassword(accPass accountPassword.AccountPassword)
-	GetAppPasswordById()
+	GetAppPasswordById(id string)
+	GetAppPasswordByServiceName(serviceName string)
 }
 
 func (apS *AccountPasswordService) CreateAccountPassword(accPass accountPassword.AccountPassword) (*accountPassword.AccountPassword, error) {
@@ -19,6 +20,10 @@ func (apS *AccountPasswordService) CreateAccountPassword(accPass accountPassword
 
 func (apS *AccountPasswordService) GetAppPasswordById(id string) (*accountPassword.AccountPassword, error) {
 	return apS.repo.GetByID(id)
+}
+
+func (apS *AccountPasswordService) GetAppPasswordByServiceName(serviceName string) (*accountPassword.AccountPassword, error) {
+	return apS.repo.GetByServiceName(serviceName)
 }
 
 func ProvideModuleforDI(repo *accountPassword.AccoutnPasswordRepo) *AccountPasswordService {
