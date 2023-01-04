@@ -41,6 +41,7 @@ func (apS *AccountPasswordService) DeleteServicePassword(serviceName string) err
 	return apS.repo.DeleteByName(serviceName)
 }
 
+// DI
 func ProvideModuleforDI(repo *accountPassword.AccoutnPasswordRepo) *AccountPasswordService {
 	return &AccountPasswordService{repo: repo}
 }

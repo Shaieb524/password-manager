@@ -69,16 +69,7 @@ func (repo *AccoutnPasswordRepo) DeleteByName(serviceName string) error {
 	return nil
 }
 
-// func (ap AccountPassword) BeforeSave() error {
-// 	passwordHash, err := bcrypt.GenerateFromPassword([]byte(ap.Password), bcrypt.DefaultCost)
-// 	if err != nil {
-// 		return err
-// 	}
-// 	ap.Password = string(passwordHash)
-// 	ap.Service = html.EscapeString(strings.TrimSpace(ap.Service))
-// 	return nil
-// }
-
+// DI
 func ProvideModuleforDI(db *gorm.DB) *AccoutnPasswordRepo {
 	return &AccoutnPasswordRepo{db: db}
 }
