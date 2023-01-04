@@ -10,7 +10,7 @@ import (
 )
 
 type AccountPasswordController struct {
-	service services.AccountPasswordService
+	service *services.AccountPasswordService
 }
 
 type accountPasswordController interface {
@@ -58,4 +58,8 @@ func (apC *AccountPasswordController) RegisterRoutes(router *gin.RouterGroup) {
 func (apC *AccountPasswordController) registerAccoutPasswordsRoutes(router *gin.RouterGroup) {
 	router.GET("/accountPassword", apC.GetAppPasswordById)
 	router.POST("/accountPassword", apC.CreatAccountPassword)
+}
+
+func ProvideModuleforDI(service *services.AccountPasswordService) *AccountPasswordController {
+	return &AccountPasswordController{service: service}
 }

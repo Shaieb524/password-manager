@@ -25,7 +25,7 @@ func LoadDatabase() {
 	// database.Database.AutoMigrate(&models.AccountPassword{})
 }
 
-func SetupRoutesAndRun(apC accountPassword.AccountPasswordController) *gin.Engine {
+func SetupRoutesAndRun(apC *accountPassword.AccountPasswordController) *gin.Engine {
 	router := gin.Default()
 
 	router.GET("/health", func(c *gin.Context) {

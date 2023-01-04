@@ -6,7 +6,7 @@ import (
 )
 
 type AccountPasswordService struct {
-	repo accountPassword.AccoutnPasswordRepo
+	repo *accountPassword.AccoutnPasswordRepo
 }
 
 type accountPasswordService interface {
@@ -21,4 +21,8 @@ func (apS *AccountPasswordService) CreateAccountPassword(accPass accountPassword
 
 func (apS *AccountPasswordService) GetAppPasswordById(id string) (*accountPassword.AccountPasswordModel, error) {
 	return apS.repo.GetByID(id)
+}
+
+func ProvideModuleforDI(repo *accountPassword.AccoutnPasswordRepo) *AccountPasswordService {
+	return &AccountPasswordService{repo: repo}
 }

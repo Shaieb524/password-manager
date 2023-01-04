@@ -1,6 +1,10 @@
 package accountPassword
 
-import "fmt"
+import (
+	"fmt"
+
+	"gorm.io/gorm"
+)
 
 // "password-manager/src/providers/database"
 
@@ -8,6 +12,10 @@ import "fmt"
 // "strings"
 
 // "golang.org/x/crypto/bcrypt"
+
+func ProvideAccountPasswordRepo(DB *gorm.DB) AccoutnPasswordRepo {
+	return AccoutnPasswordRepo{db: DB}
+}
 
 func (repo *AccoutnPasswordRepo) CreateAccountPassword(accPass AccountPasswordModel) (*AccountPasswordModel, error) {
 	fmt.Println("repo : ", repo)
@@ -36,3 +44,7 @@ func (repo *AccoutnPasswordRepo) GetByID(id string) (*AccountPasswordModel, erro
 // 	ap.Service = html.EscapeString(strings.TrimSpace(ap.Service))
 // 	return nil
 // }
+
+func ProvideModuleforDI(db *gorm.DB) *AccoutnPasswordRepo {
+	return &AccoutnPasswordRepo{db: db}
+}

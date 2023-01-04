@@ -2,14 +2,21 @@ package main
 
 import (
 	"fmt"
-	"password-manager/src/controllers/accountPassword"
+	apController "password-manager/src/controllers/accountPassword"
+	apRepo "password-manager/src/models/database/accountPassword"
+	"password-manager/src/providers/database"
 	"password-manager/src/routes"
+	apService "password-manager/src/services/accountPassword"
 )
 
 func main() {
-	var apc accountPassword.AccountPasswordController
+	db := database.NewDatabaseContext()
+	repo := apRepo.ProvideModuleforDI(db)
+	service := apService.ProvideModuleforDI(repo)
+	apCC := apController.ProvideModuleforDI(service)
+
 	fmt.Println("Start bitch")
 	routes.LoadEnv()
 	routes.LoadDatabase()
-	routes.SetupRoutesAndRun(apc)
+	routes.SetupRoutesAndRun(apCC)
 }
