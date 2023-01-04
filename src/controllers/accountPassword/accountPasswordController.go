@@ -1,6 +1,7 @@
 package accountPassword
 
 import (
+	"fmt"
 	"net/http"
 	"password-manager/src/models/database/accountPassword"
 	services "password-manager/src/services/accountPassword"
@@ -27,6 +28,8 @@ func (apC *AccountPasswordController) CreatAccountPassword(ctx *gin.Context) {
 			"error": "Could not parse request : " + err.Error(),
 		})
 	}
+
+	fmt.Println("accPassword : ", accPassword)
 
 	if accPassword, err := apC.service.CreateAccountPassword(*accPassword); err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{

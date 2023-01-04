@@ -7,7 +7,7 @@ import (
 type AccountPassword struct {
 	gorm.Model
 	Service  string `gorm:"size:255;not null;unique" json:"service"`
-	Password string `gorm:"size:255;not null;" json:"-"`
+	Password string `gorm:"size:255;not null;" json:"password"`
 }
 
 type AccoutnPasswordRepo struct {
