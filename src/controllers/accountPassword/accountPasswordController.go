@@ -20,7 +20,7 @@ type accountPasswordController interface {
 
 func (apC *AccountPasswordController) CreatAccountPassword(ctx *gin.Context) {
 	fmt.Println("apC: ", apC)
-	var accPassword *accountPassword.AccountPasswordModel
+	var accPassword *accountPassword.AccountPassword
 
 	err := ctx.BindJSON(&accPassword)
 

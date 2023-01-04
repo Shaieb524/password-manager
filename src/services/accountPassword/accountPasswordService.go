@@ -10,16 +10,16 @@ type AccountPasswordService struct {
 }
 
 type accountPasswordService interface {
-	CreatAccountPassword(accPass accountPassword.AccountPasswordModel)
+	CreatAccountPassword(accPass accountPassword.AccountPassword)
 	GetAppPasswordById()
 }
 
-func (apS *AccountPasswordService) CreateAccountPassword(accPass accountPassword.AccountPasswordModel) (*accountPassword.AccountPasswordModel, error) {
+func (apS *AccountPasswordService) CreateAccountPassword(accPass accountPassword.AccountPassword) (*accountPassword.AccountPassword, error) {
 	fmt.Println("aps: ", apS)
 	return apS.repo.CreateAccountPassword(accPass)
 }
 
-func (apS *AccountPasswordService) GetAppPasswordById(id string) (*accountPassword.AccountPasswordModel, error) {
+func (apS *AccountPasswordService) GetAppPasswordById(id string) (*accountPassword.AccountPassword, error) {
 	return apS.repo.GetByID(id)
 }
 

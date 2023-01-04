@@ -4,7 +4,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type AccountPasswordModel struct {
+type AccountPassword struct {
 	gorm.Model
 	Service  string `gorm:"size:255;not null;unique" json:"service"`
 	Password string `gorm:"size:255;not null;" json:"-"`

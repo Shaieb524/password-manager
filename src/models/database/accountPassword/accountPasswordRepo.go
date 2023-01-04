@@ -17,18 +17,18 @@ func ProvideAccountPasswordRepo(DB *gorm.DB) AccoutnPasswordRepo {
 	return AccoutnPasswordRepo{db: DB}
 }
 
-func (repo *AccoutnPasswordRepo) CreateAccountPassword(accPass AccountPasswordModel) (*AccountPasswordModel, error) {
+func (repo *AccoutnPasswordRepo) CreateAccountPassword(accPass AccountPassword) (*AccountPassword, error) {
 	fmt.Println("repo : ", repo)
 	fmt.Println("accPass : ", accPass)
 	err := repo.db.Create(&accPass).Error
 	if err != nil {
-		return &AccountPasswordModel{}, err
+		return &AccountPassword{}, err
 	}
 	return &accPass, nil
 }
 
-func (repo *AccoutnPasswordRepo) GetByID(id string) (*AccountPasswordModel, error) {
-	var ap AccountPasswordModel
+func (repo *AccoutnPasswordRepo) GetByID(id string) (*AccountPassword, error) {
+	var ap AccountPassword
 	if err := repo.db.First(&ap, "id=?", id).Error; err != nil {
 		return nil, err
 	}
