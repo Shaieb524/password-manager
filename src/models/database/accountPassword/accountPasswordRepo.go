@@ -70,6 +70,6 @@ func (repo *AccoutnPasswordRepo) DeleteByName(serviceName string) error {
 }
 
 // DI
-func ProvideModuleforDI(db *gorm.DB) *AccoutnPasswordRepo {
+func NewAccPasswordRepoModule(db *gorm.DB) *AccoutnPasswordRepo {
 	return &AccoutnPasswordRepo{db: db}
 }

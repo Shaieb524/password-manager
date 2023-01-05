@@ -19,6 +19,7 @@ type accountPasswordController interface {
 	GetAppPasswordByServiceName(ctx *gin.Context)
 	EditServicePassword(ctx *gin.Context)
 	DeleteServicePassword(ctx *gin.Context)
+	ProvideModuleforDI(service *services.AccountPasswordService) *AccountPasswordController
 }
 
 func (apC *AccountPasswordController) CreatAccountPassword(ctx *gin.Context) {
@@ -122,6 +123,6 @@ func (apC *AccountPasswordController) registerAccoutPasswordsRoutes(router *gin.
 	router.DELETE("/accountPassword/:name", apC.DeleteServicePassword)
 }
 
-func ProvideModuleforDI(service *services.AccountPasswordService) *AccountPasswordController {
+func NewAccPasswordControllerModule(service *services.AccountPasswordService) *AccountPasswordController {
 	return &AccountPasswordController{service: service}
 }

@@ -42,6 +42,6 @@ func (apS *AccountPasswordService) DeleteServicePassword(serviceName string) err
 }
 
 // DI
-func ProvideModuleforDI(repo *accountPassword.AccoutnPasswordRepo) *AccountPasswordService {
+func NewAccPasswordServiceModule(repo *accountPassword.AccoutnPasswordRepo) *AccountPasswordService {
 	return &AccountPasswordService{repo: repo}
 }
