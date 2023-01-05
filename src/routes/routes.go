@@ -1,31 +1,21 @@
 package routes
 
 import (
-	"fmt"
-	"log"
-	"os"
 	"password-manager/src/controllers/accountPassword"
 	authentication "password-manager/src/controllers/auth"
 	"password-manager/src/middlewares"
 	"password-manager/src/providers/database"
+	"password-manager/src/utils/env"
 
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 )
-
-func LoadEnv() {
-	err := godotenv.Load(".env")
-	if err != nil {
-		log.Fatal("Error loading .env file!")
-	}
-}
 
 func LoadDatabase() {
 	database.Connect()
 	// database.Database.AutoMigrate(&models.AccountPassword{})
 }
 
-func SetupRoutesAndRun(apC *accountPassword.AccountPasswordController) *gin.Engine {
+func SetupRoutesAndRun(apC *accountPassword.AccountPasswordController, globalEnv *env.Env) *gin.Engine {
 	router := gin.Default()
 
 	router.GET("/health", func(c *gin.Context) {
@@ -37,12 +27,11 @@ func SetupRoutesAndRun(apC *accountPassword.AccountPasswordController) *gin.Engi
 	publicRoutes := router.Group("/auth")
 	authentication.RegisterRoutes(publicRoutes)
 
-	fmt.Println("apccccc :", apC)
 	apiV1 := router.Group("/api/v1")
 	apiV1.Use(middlewares.JWTAuthentication())
 	apC.RegisterRoutes(apiV1)
 
-	serverUrl := os.Getenv("SERVER_HOST") + ":" + os.Getenv("SERVER_PORT")
+	serverUrl := globalEnv.ServerHost + ":" + globalEnv.ServerPort
 	router.Run(serverUrl)
 	return router
 }
