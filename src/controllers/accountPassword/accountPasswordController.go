@@ -109,8 +109,8 @@ func (apC *AccountPasswordController) DeleteServicePassword(ctx *gin.Context) {
 	}
 }
 
-// Routes and DI
-func (apC *AccountPasswordController) RegisterRoutes(router *gin.RouterGroup) {
+// Routing
+func (apC *AccountPasswordController) RegisterAccountPasswordRoutes(router *gin.RouterGroup) {
 	apC.registerAccoutPasswordsRoutes(router)
 }
 
@@ -123,6 +123,7 @@ func (apC *AccountPasswordController) registerAccoutPasswordsRoutes(router *gin.
 	router.DELETE("/accountPassword/:name", apC.DeleteServicePassword)
 }
 
+//DI
 func NewAccPasswordControllerModule(service *services.AccountPasswordService) *AccountPasswordController {
 	return &AccountPasswordController{service: service}
 }

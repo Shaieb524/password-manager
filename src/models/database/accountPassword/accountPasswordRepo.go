@@ -4,17 +4,6 @@ import (
 	"gorm.io/gorm"
 )
 
-// "password-manager/src/providers/database"
-
-// "html"
-// "strings"
-
-// "golang.org/x/crypto/bcrypt"
-
-func ProvideAccountPasswordRepo(DB *gorm.DB) AccoutnPasswordRepo {
-	return AccoutnPasswordRepo{db: DB}
-}
-
 func (repo *AccoutnPasswordRepo) CreateAccountPassword(accPass AccountPassword) (*AccountPassword, error) {
 	err := repo.db.Create(&accPass).Error
 	if err != nil {

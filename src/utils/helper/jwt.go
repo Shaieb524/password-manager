@@ -1,18 +1,21 @@
-package utils
+package helper
 
 import (
-	"os"
 	"password-manager/src/models/database/user"
+	"password-manager/src/utils/env"
 	"strconv"
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
 )
 
-var privateKey = []byte(os.Getenv("JWT_PRIVATE_KEY"))
+// TODO Check how to pass this env
+var globalEnv = env.NewEnv()
+var privateKey = []byte(globalEnv.JwtPrivateKey)
 
 func GenerateJWT(user user.User) (string, error) {
-	tokenTTL, _ := strconv.Atoi(os.Getenv("TOKEN_TTL"))
+	tokenTTL, _ := strconv.Atoi(globalEnv.TokenTil)
+
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"id":  user.ID,
 		"iat": time.Now().Unix(),
