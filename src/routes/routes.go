@@ -2,20 +2,14 @@ package routes
 
 import (
 	"password-manager/src/controllers/accountPassword"
-	authentication "password-manager/src/controllers/auth"
+	"password-manager/src/controllers/authentication"
 	"password-manager/src/middlewares"
-	"password-manager/src/providers/database"
 	"password-manager/src/utils/env"
 
 	"github.com/gin-gonic/gin"
 )
 
-func LoadDatabase() {
-	database.Connect()
-	// database.Database.AutoMigrate(&models.AccountPassword{})
-}
-
-func SetupRoutesAndRun(apC *accountPassword.AccountPasswordController, globalEnv *env.Env) *gin.Engine {
+func SetupRoutesAndRun(apC *accountPassword.AccountPasswordController, authC *authentication.AuthenticationController, globalEnv *env.Env) *gin.Engine {
 	router := gin.Default()
 
 	router.GET("/health", func(c *gin.Context) {
@@ -25,11 +19,11 @@ func SetupRoutesAndRun(apC *accountPassword.AccountPasswordController, globalEnv
 	})
 
 	publicRoutes := router.Group("/auth")
-	authentication.RegisterRoutes(publicRoutes)
+	authC.RegisterAuthenticationRoutes(publicRoutes)
 
 	apiV1 := router.Group("/api/v1")
 	apiV1.Use(middlewares.JWTAuthentication())
-	apC.RegisterRoutes(apiV1)
+	apC.RegisterAccountPasswordRoutes(apiV1)
 
 	serverUrl := globalEnv.ServerHost + ":" + globalEnv.ServerPort
 	router.Run(serverUrl)

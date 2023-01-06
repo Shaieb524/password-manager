@@ -2,14 +2,19 @@ package main
 
 import (
 	"fmt"
+
+	authController "password-manager/src/controllers/authentication"
+	userRepo "password-manager/src/models/database/user"
+	authService "password-manager/src/services/authentcation"
+
 	apController "password-manager/src/controllers/accountPassword"
 	apRepo "password-manager/src/models/database/accountPassword"
+	apService "password-manager/src/services/accountPassword"
+
 	"password-manager/src/providers/database"
 	"password-manager/src/routes"
 	"password-manager/src/utils/env"
-
 	// web "password-manager/src/web"
-	apService "password-manager/src/services/accountPassword"
 )
 
 func main() {
@@ -20,10 +25,15 @@ func main() {
 
 	globalEnv := env.NewEnv()
 	db := database.NewDatabaseContext()
-	repo := apRepo.NewAccPasswordRepoModule(db)
-	service := apService.NewAccPasswordServiceModule(repo)
-	apCC := apController.NewAccPasswordControllerModule(service)
+
+	authR := userRepo.NewAuthenticationRepoModule(db)
+	authS := authService.NewAuthenticationServiceModule(authR)
+	authC := authController.NewAuthenticationControllerModule(authS)
+
+	apR := apRepo.NewAccPasswordRepoModule(db)
+	apS := apService.NewAccPasswordServiceModule(apR)
+	apCC := apController.NewAccPasswordControllerModule(apS)
 
 	// api := web.InitAccountPasswordAPI()
-	routes.SetupRoutesAndRun(apCC, globalEnv)
+	routes.SetupRoutesAndRun(apCC, authC, globalEnv)
 }
