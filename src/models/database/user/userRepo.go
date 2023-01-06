@@ -1,7 +1,6 @@
 package user
 
 import (
-	"fmt"
 	"time"
 
 	"html"
@@ -51,8 +50,6 @@ func (repo *AuthenticationRepo) hashPassword(password string) (string, error) {
 }
 
 func (repo *AuthenticationRepo) ValidatePassword(user *User, inputpassword string) error {
-	fmt.Println("user password : ", user.Password)
-	fmt.Println("inputpassword : ", inputpassword)
 	return bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(inputpassword))
 }
 

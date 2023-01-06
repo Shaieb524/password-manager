@@ -18,10 +18,7 @@ import (
 )
 
 func main() {
-
 	fmt.Println("Start bitch")
-	// routes.LoadEnv()
-	// routes.LoadDatabase()
 
 	globalEnv := env.NewEnv()
 	db := database.NewDatabaseContext()

@@ -15,11 +15,15 @@ type Env struct {
 	DbUser     string `mapstructure:"DB_USER"`
 	DbPassword string `mapstructure:"DB_PASSWORD"`
 	DbName     string `mapstructure:"DB_NAME"`
+
+	JwtPrivateKey string `mapstructure:"JWT_PRIVATE_KEY"`
+	TokenTil      string `mapstructure:"TOKEN_TTL"`
 }
 
 var globalEnv = Env{}
 
 func GetEnv() Env {
+	// TODO check when we should return this or *
 	return globalEnv
 }
 

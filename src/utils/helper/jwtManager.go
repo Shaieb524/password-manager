@@ -5,28 +5,9 @@ import (
 	"fmt"
 	"strings"
 
-	// "password-manager/src/models/database/user"
-
 	"github.com/gin-gonic/gin"
-	// "github.com/gofrs/uuid"
 	"github.com/golang-jwt/jwt/v4"
 )
-
-// func CurrentUser(context *gin.Context) (user.User, error) {
-// 	err := ValidateJWT(context)
-// 	if err != nil {
-// 		return user.User{}, err
-// 	}
-// 	token, _ := getToken(context)
-// 	claims, _ := token.Claims.(jwt.MapClaims)
-// 	userId := claims["id"].(string)
-
-// 	user, err := user.FindUserById(uuid.Must(uuid.FromString(userId)))
-// 	if err != nil {
-// 		return user, err
-// 	}
-// 	return user, nil
-// }
 
 func ValidateJWT(context *gin.Context) error {
 	token, err := getToken(context)
