@@ -4,12 +4,15 @@ import (
 	"gorm.io/gorm"
 )
 
-func (repo *AccoutnPasswordRepo) CreateAccountPassword(accPass AccountPassword) (*AccountPassword, error) {
-	err := repo.db.Create(&accPass).Error
+func (repo *AccoutnPasswordRepo) CreateAccountPassword(accPassInput AccountPasswordInputDto) (*AccountPasswordInputDto, error) {
+	var dbAccPass AccountPassword
+	dbAccPass.Service = accPassInput.Service
+	dbAccPass.Password = accPassInput.Password
+	err := repo.db.Create(&dbAccPass).Error
 	if err != nil {
-		return &AccountPassword{}, err
+		return &AccountPasswordInputDto{}, err
 	}
-	return &accPass, nil
+	return &accPassInput, nil
 }
 
 func (repo *AccoutnPasswordRepo) GetAllAccountsPasswords() (*[]AccountPassword, error) {
@@ -38,15 +41,15 @@ func (repo *AccoutnPasswordRepo) GetByServiceName(serviceName string) (*AccountP
 	return &ap, nil
 }
 
-func (repo *AccoutnPasswordRepo) EditAccountPassword(accPass AccountPassword) (*AccountPassword, error) {
+func (repo *AccoutnPasswordRepo) EditAccountPassword(accPassInput AccountPasswordInputDto) (*AccountPasswordInputDto, error) {
 	var ap AccountPassword
-	if err := repo.db.First(&ap, "service=?", accPass.Service).Error; err != nil {
+	if err := repo.db.First(&ap, "service=?", accPassInput.Service).Error; err != nil {
 		return nil, err
 	}
-	ap.Password = accPass.Password
+	ap.Password = accPassInput.Password
 	repo.db.Save(&ap)
 
-	return &ap, nil
+	return &accPassInput, nil
 }
 
 func (repo *AccoutnPasswordRepo) DeleteByName(serviceName string) error {

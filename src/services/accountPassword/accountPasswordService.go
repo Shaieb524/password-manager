@@ -17,7 +17,7 @@ type accountPasswordService interface {
 	DeleteServicePassword(serviceName string)
 }
 
-func (apS *AccountPasswordService) CreateAccountPassword(accPass accountPassword.AccountPassword) (*accountPassword.AccountPassword, error) {
+func (apS *AccountPasswordService) CreateAccountPassword(accPass accountPassword.AccountPasswordInputDto) (*accountPassword.AccountPasswordInputDto, error) {
 	return apS.repo.CreateAccountPassword(accPass)
 }
 
@@ -33,7 +33,7 @@ func (apS *AccountPasswordService) GetAppPasswordByServiceName(serviceName strin
 	return apS.repo.GetByServiceName(serviceName)
 }
 
-func (apS *AccountPasswordService) EditServicePassword(accPass accountPassword.AccountPassword) (*accountPassword.AccountPassword, error) {
+func (apS *AccountPasswordService) EditServicePassword(accPass accountPassword.AccountPasswordInputDto) (*accountPassword.AccountPasswordInputDto, error) {
 	return apS.repo.EditAccountPassword(accPass)
 }
 

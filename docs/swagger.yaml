@@ -14,6 +14,13 @@ definitions:
       updatedAt:
         type: string
     type: object
+  accountPassword.AccountPasswordDto:
+    properties:
+      password:
+        type: string
+      service:
+        type: string
+    type: object
   gorm.DeletedAt:
     properties:
       time:
@@ -88,14 +95,14 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/accountPassword.AccountPassword'
+          $ref: '#/definitions/accountPassword.AccountPasswordDto'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/accountPassword.AccountPassword'
+            $ref: '#/definitions/accountPassword.AccountPasswordDto'
       summary: edit account password
       tags:
       - AccountPassword
@@ -114,14 +121,14 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/accountPassword.AccountPassword'
+          $ref: '#/definitions/accountPassword.AccountPasswordDto'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/accountPassword.AccountPassword'
+            $ref: '#/definitions/accountPassword.AccountPasswordDto'
       summary: create a new account password
       tags:
       - AccountPassword

@@ -76,7 +76,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/accountPassword.AccountPassword"
+                            "$ref": "#/definitions/accountPassword.AccountPasswordDto"
                         }
                     }
                 ],
@@ -84,7 +84,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/accountPassword.AccountPassword"
+                            "$ref": "#/definitions/accountPassword.AccountPasswordDto"
                         }
                     }
                 }
@@ -115,7 +115,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/accountPassword.AccountPassword"
+                            "$ref": "#/definitions/accountPassword.AccountPasswordDto"
                         }
                     }
                 ],
@@ -123,7 +123,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/accountPassword.AccountPassword"
+                            "$ref": "#/definitions/accountPassword.AccountPasswordDto"
                         }
                     }
                 }
@@ -280,6 +280,17 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "accountPassword.AccountPasswordDto": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "service": {
                     "type": "string"
                 }
             }

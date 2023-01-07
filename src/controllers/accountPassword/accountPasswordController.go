@@ -19,7 +19,6 @@ type accountPasswordController interface {
 	GetAppPasswordByServiceName(ctx *gin.Context)
 	EditServicePassword(ctx *gin.Context)
 	DeleteServicePassword(ctx *gin.Context)
-	ProvideModuleforDI(service *services.AccountPasswordService) *AccountPasswordController
 }
 
 // @Tags AccountPassword
@@ -28,14 +27,14 @@ type accountPasswordController interface {
 // @Accept json
 // @Produce json
 // @param Authorization header string true "Authorization"
-// @Param data body accountPassword.AccountPassword true "payload"
-// @Success 200 {object} accountPassword.AccountPassword
+// @Param data body accountPassword.AccountPasswordDto true "payload"
+// @Success 200 {object} accountPassword.AccountPasswordDto
 // Failure 400 {object} models.ErrorResponse
 // Failure 404 {object} models.ErrorResponse
 // Failure 500 {object} models.ErrorResponse
 // @Router /accountPassword [post]
 func (apC *AccountPasswordController) CreatAccountPassword(ctx *gin.Context) {
-	var accPassword *accountPassword.AccountPassword
+	var accPassword *accountPassword.AccountPasswordInputDto
 
 	err := ctx.BindJSON(&accPassword)
 
@@ -117,14 +116,14 @@ func (apC *AccountPasswordController) GetAppPasswordByServiceName(ctx *gin.Conte
 // @Accept json
 // @Produce json
 // @param Authorization header string true "Authorization"
-// @Param data body accountPassword.AccountPassword true "payload"
-// @Success 200 {object} accountPassword.AccountPassword
+// @Param data body accountPassword.AccountPasswordDto true "payload"
+// @Success 200 {object} accountPassword.AccountPasswordDto
 // Failure 400 {object} models.ErrorResponse
 // Failure 404 {object} models.ErrorResponse
 // Failure 500 {object} models.ErrorResponse
 // @Router /accountPassword [patch]
 func (apC *AccountPasswordController) EditAccountPassword(ctx *gin.Context) {
-	var accPassword *accountPassword.AccountPassword
+	var accPassword *accountPassword.AccountPasswordInputDto
 
 	err := ctx.BindJSON(&accPassword)
 

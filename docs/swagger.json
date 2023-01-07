@@ -64,7 +64,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/accountPassword.AccountPassword"
+                            "$ref": "#/definitions/accountPassword.AccountPasswordDto"
                         }
                     }
                 ],
@@ -72,7 +72,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/accountPassword.AccountPassword"
+                            "$ref": "#/definitions/accountPassword.AccountPasswordDto"
                         }
                     }
                 }
@@ -103,7 +103,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/accountPassword.AccountPassword"
+                            "$ref": "#/definitions/accountPassword.AccountPasswordDto"
                         }
                     }
                 ],
@@ -111,7 +111,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/accountPassword.AccountPassword"
+                            "$ref": "#/definitions/accountPassword.AccountPasswordDto"
                         }
                     }
                 }
@@ -268,6 +268,17 @@
                     "type": "string"
                 },
                 "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "accountPassword.AccountPasswordDto": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "service": {
                     "type": "string"
                 }
             }
