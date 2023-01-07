@@ -22,6 +22,18 @@ type accountPasswordController interface {
 	ProvideModuleforDI(service *services.AccountPasswordService) *AccountPasswordController
 }
 
+// @Tags AccountPassword
+// @Summary create a new account password
+// @Description create a new account password
+// @Accept json
+// @Produce json
+// @param Authorization header string true "Authorization"
+// @Param data body accountPassword.AccountPassword true "payload"
+// @Success 200 {object} accountPassword.AccountPassword
+// Failure 400 {object} models.ErrorResponse
+// Failure 404 {object} models.ErrorResponse
+// Failure 500 {object} models.ErrorResponse
+// @Router /accountPassword [post]
 func (apC *AccountPasswordController) CreatAccountPassword(ctx *gin.Context) {
 	var accPassword *accountPassword.AccountPassword
 
@@ -42,6 +54,17 @@ func (apC *AccountPasswordController) CreatAccountPassword(ctx *gin.Context) {
 	}
 }
 
+// @Tags AccountPassword
+// @Summary get all accounts passwords
+// @Description get all accounts passwords
+// @Accept json
+// @Produce json
+// @param Authorization header string true "Authorization"
+// @Success 200 {object} []accountPassword.AccountPassword
+// Failure 400 {object} models.ErrorResponse
+// Failure 404 {object} models.ErrorResponse
+// Failure 500 {object} models.ErrorResponse
+// @Router /accountPassword [get]
 func (apC *AccountPasswordController) GetAllAccountsPasswords(ctx *gin.Context) {
 
 	if accPasswords, err := apC.service.GetAllAccountsPasswords(); err != nil {
@@ -65,8 +88,19 @@ func (apC *AccountPasswordController) GetAppPasswordById(ctx *gin.Context) {
 	}
 }
 
+// @Tags AccountPassword
+// @Summary get account password by service name
+// @Description account password by service name
+// @Accept json
+// @Produce json
+// @Param name path string true "name"
+// @Success 200 {object} accountPassword.AccountPassword
+// Failure 400 {object} models.ErrorResponse
+// Failure 404 {object} models.ErrorResponse
+// Failure 500 {object} models.ErrorResponse
+// @Router /accountPassword/{serviceName} [get]
 func (apC *AccountPasswordController) GetAppPasswordByServiceName(ctx *gin.Context) {
-	accountName := ctx.Param("name")
+	accountName := ctx.Param("serviceName")
 
 	if appPassword, err := apC.service.GetAppPasswordByServiceName(accountName); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
@@ -77,6 +111,18 @@ func (apC *AccountPasswordController) GetAppPasswordByServiceName(ctx *gin.Conte
 	}
 }
 
+// @Tags AccountPassword
+// @Summary edit account password
+// @Description get edit account password
+// @Accept json
+// @Produce json
+// @param Authorization header string true "Authorization"
+// @Param data body accountPassword.AccountPassword true "payload"
+// @Success 200 {object} accountPassword.AccountPassword
+// Failure 400 {object} models.ErrorResponse
+// Failure 404 {object} models.ErrorResponse
+// Failure 500 {object} models.ErrorResponse
+// @Router /accountPassword [patch]
 func (apC *AccountPasswordController) EditAccountPassword(ctx *gin.Context) {
 	var accPassword *accountPassword.AccountPassword
 
@@ -97,8 +143,20 @@ func (apC *AccountPasswordController) EditAccountPassword(ctx *gin.Context) {
 	}
 }
 
+// @Tags AccountPassword
+// @Summary delete account password
+// @Description delete account password
+// @Accept json
+// @Produce json
+// @param Authorization header string true "Authorization"
+// @Param name path string true "name"
+// @Success 200 {object} accountPassword.AccountPassword
+// Failure 400 {object} models.ErrorResponse
+// Failure 404 {object} models.ErrorResponse
+// Failure 500 {object} models.ErrorResponse
+// @Router /accountPassword/{serviceName} [delete]
 func (apC *AccountPasswordController) DeleteServicePassword(ctx *gin.Context) {
-	accountName := ctx.Param("name")
+	accountName := ctx.Param("serviceName")
 
 	if err := apC.service.DeleteServicePassword(accountName); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
@@ -118,9 +176,9 @@ func (apC *AccountPasswordController) registerAccoutPasswordsRoutes(router *gin.
 	router.POST("/accountPassword", apC.CreatAccountPassword)
 	router.GET("/accountPassword", apC.GetAllAccountsPasswords)
 	// router.GET("/accountPassword/:id", apC.GetAppPasswordById)
-	router.GET("/accountPassword/:name", apC.GetAppPasswordByServiceName)
+	router.GET("/accountPassword/:serviceName", apC.GetAppPasswordByServiceName)
 	router.PATCH("/accountPassword", apC.EditAccountPassword)
-	router.DELETE("/accountPassword/:name", apC.DeleteServicePassword)
+	router.DELETE("/accountPassword/:serviceName", apC.DeleteServicePassword)
 }
 
 //DI
