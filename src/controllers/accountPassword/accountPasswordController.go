@@ -26,9 +26,9 @@ type accountPasswordController interface {
 // @Description create a new account password
 // @Accept json
 // @Produce json
-// @param Authorization header string true "Authorization"
-// @Param data body accountPassword.AccountPasswordDto true "payload"
-// @Success 200 {object} accountPassword.AccountPasswordDto
+// @param Authorization header string true "Bearer Auth, pls add bearer before"
+// @Param data body accountPassword.AccountPasswordInputDto true "payload"
+// @Success 200 {object} accountPassword.AccountPasswordInputDto
 // Failure 400 {object} models.ErrorResponse
 // Failure 404 {object} models.ErrorResponse
 // Failure 500 {object} models.ErrorResponse
@@ -58,7 +58,7 @@ func (apC *AccountPasswordController) CreatAccountPassword(ctx *gin.Context) {
 // @Description get all accounts passwords
 // @Accept json
 // @Produce json
-// @param Authorization header string true "Authorization"
+// @param Authorization header string true "Bearer Auth, pls add bearer before"
 // @Success 200 {object} []accountPassword.AccountPassword
 // Failure 400 {object} models.ErrorResponse
 // Failure 404 {object} models.ErrorResponse
@@ -92,6 +92,7 @@ func (apC *AccountPasswordController) GetAppPasswordById(ctx *gin.Context) {
 // @Description account password by service name
 // @Accept json
 // @Produce json
+// @param Authorization header string true "Bearer Auth, pls add bearer before"
 // @Param name path string true "name"
 // @Success 200 {object} accountPassword.AccountPassword
 // Failure 400 {object} models.ErrorResponse
@@ -115,9 +116,9 @@ func (apC *AccountPasswordController) GetAppPasswordByServiceName(ctx *gin.Conte
 // @Description get edit account password
 // @Accept json
 // @Produce json
-// @param Authorization header string true "Authorization"
-// @Param data body accountPassword.AccountPasswordDto true "payload"
-// @Success 200 {object} accountPassword.AccountPasswordDto
+// @param Authorization header string true "Bearer Auth, pls add bearer before"
+// @Param data body accountPassword.AccountPasswordInputDto true "payload"
+// @Success 200 {object} accountPassword.AccountPasswordInputDto
 // Failure 400 {object} models.ErrorResponse
 // Failure 404 {object} models.ErrorResponse
 // Failure 500 {object} models.ErrorResponse
@@ -147,7 +148,7 @@ func (apC *AccountPasswordController) EditAccountPassword(ctx *gin.Context) {
 // @Description delete account password
 // @Accept json
 // @Produce json
-// @param Authorization header string true "Authorization"
+// @param Authorization header string true "Bearer Auth pls add bearer before"
 // @Param name path string true "name"
 // @Success 200 {object} accountPassword.AccountPassword
 // Failure 400 {object} models.ErrorResponse

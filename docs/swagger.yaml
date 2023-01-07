@@ -14,7 +14,7 @@ definitions:
       updatedAt:
         type: string
     type: object
-  accountPassword.AccountPasswordDto:
+  accountPassword.AccountPasswordInputDto:
     properties:
       password:
         type: string
@@ -63,7 +63,7 @@ paths:
       - application/json
       description: get all accounts passwords
       parameters:
-      - description: Authorization
+      - description: Bearer Auth, pls add bearer before
         in: header
         name: Authorization
         required: true
@@ -85,7 +85,7 @@ paths:
       - application/json
       description: get edit account password
       parameters:
-      - description: Authorization
+      - description: Bearer Auth, pls add bearer before
         in: header
         name: Authorization
         required: true
@@ -95,14 +95,14 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/accountPassword.AccountPasswordDto'
+          $ref: '#/definitions/accountPassword.AccountPasswordInputDto'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/accountPassword.AccountPasswordDto'
+            $ref: '#/definitions/accountPassword.AccountPasswordInputDto'
       summary: edit account password
       tags:
       - AccountPassword
@@ -111,7 +111,7 @@ paths:
       - application/json
       description: create a new account password
       parameters:
-      - description: Authorization
+      - description: Bearer Auth, pls add bearer before
         in: header
         name: Authorization
         required: true
@@ -121,14 +121,14 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/accountPassword.AccountPasswordDto'
+          $ref: '#/definitions/accountPassword.AccountPasswordInputDto'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/accountPassword.AccountPasswordDto'
+            $ref: '#/definitions/accountPassword.AccountPasswordInputDto'
       summary: create a new account password
       tags:
       - AccountPassword
@@ -138,7 +138,7 @@ paths:
       - application/json
       description: delete account password
       parameters:
-      - description: Authorization
+      - description: Bearer Auth pls add bearer before
         in: header
         name: Authorization
         required: true
@@ -163,6 +163,11 @@ paths:
       - application/json
       description: account password by service name
       parameters:
+      - description: Bearer Auth, pls add bearer before
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: name
         in: path
         name: name

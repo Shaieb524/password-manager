@@ -32,7 +32,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Authorization",
+                        "description": "Bearer Auth, pls add bearer before",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -65,7 +65,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Authorization",
+                        "description": "Bearer Auth, pls add bearer before",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -76,7 +76,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/accountPassword.AccountPasswordDto"
+                            "$ref": "#/definitions/accountPassword.AccountPasswordInputDto"
                         }
                     }
                 ],
@@ -84,7 +84,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/accountPassword.AccountPasswordDto"
+                            "$ref": "#/definitions/accountPassword.AccountPasswordInputDto"
                         }
                     }
                 }
@@ -104,7 +104,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Authorization",
+                        "description": "Bearer Auth, pls add bearer before",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -115,7 +115,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/accountPassword.AccountPasswordDto"
+                            "$ref": "#/definitions/accountPassword.AccountPasswordInputDto"
                         }
                     }
                 ],
@@ -123,7 +123,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/accountPassword.AccountPasswordDto"
+                            "$ref": "#/definitions/accountPassword.AccountPasswordInputDto"
                         }
                     }
                 }
@@ -143,6 +143,13 @@ const docTemplate = `{
                 ],
                 "summary": "get account password by service name",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer Auth, pls add bearer before",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "string",
                         "description": "name",
@@ -175,7 +182,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Authorization",
+                        "description": "Bearer Auth pls add bearer before",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -284,7 +291,7 @@ const docTemplate = `{
                 }
             }
         },
-        "accountPassword.AccountPasswordDto": {
+        "accountPassword.AccountPasswordInputDto": {
             "type": "object",
             "properties": {
                 "password": {

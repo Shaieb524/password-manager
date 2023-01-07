@@ -20,7 +20,7 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Authorization",
+                        "description": "Bearer Auth, pls add bearer before",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -53,7 +53,7 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Authorization",
+                        "description": "Bearer Auth, pls add bearer before",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -64,7 +64,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/accountPassword.AccountPasswordDto"
+                            "$ref": "#/definitions/accountPassword.AccountPasswordInputDto"
                         }
                     }
                 ],
@@ -72,7 +72,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/accountPassword.AccountPasswordDto"
+                            "$ref": "#/definitions/accountPassword.AccountPasswordInputDto"
                         }
                     }
                 }
@@ -92,7 +92,7 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Authorization",
+                        "description": "Bearer Auth, pls add bearer before",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -103,7 +103,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/accountPassword.AccountPasswordDto"
+                            "$ref": "#/definitions/accountPassword.AccountPasswordInputDto"
                         }
                     }
                 ],
@@ -111,7 +111,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/accountPassword.AccountPasswordDto"
+                            "$ref": "#/definitions/accountPassword.AccountPasswordInputDto"
                         }
                     }
                 }
@@ -131,6 +131,13 @@
                 ],
                 "summary": "get account password by service name",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer Auth, pls add bearer before",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "string",
                         "description": "name",
@@ -163,7 +170,7 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Authorization",
+                        "description": "Bearer Auth pls add bearer before",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
@@ -272,7 +279,7 @@
                 }
             }
         },
-        "accountPassword.AccountPasswordDto": {
+        "accountPassword.AccountPasswordInputDto": {
             "type": "object",
             "properties": {
                 "password": {
