@@ -17,9 +17,19 @@ type AuthenticationController struct {
 type authenticationController interface {
 	Register(c *gin.Context)
 	Login(c *gin.Context)
-	RegisterRoutes(router *gin.RouterGroup)
 }
 
+// @Tags Authentication
+// @Summary register a new user
+// @Description register a new user
+// @Accept json
+// @Produce json
+// @Param data body user.AuthenticationInput true "payload"
+// @Success 200 {object} user.User
+// Failure 400 {object} models.ErrorResponse
+// Failure 404 {object} models.ErrorResponse
+// Failure 500 {object} models.ErrorResponse
+// @Router /auth/register [post]
 func (authC *AuthenticationController) Register(c *gin.Context) {
 	var input user.AuthenticationInput
 	if err := c.ShouldBindJSON(&input); err != nil {
@@ -41,6 +51,17 @@ func (authC *AuthenticationController) Register(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"user": savedUser})
 }
 
+// @Tags Authentication
+// @Summary login a user
+// @Description login a user
+// @Accept json
+// @Produce json
+// @Param data body user.AuthenticationInput true "payload"
+// Success 200 {object}
+// Failure 400 {object} models.ErrorResponse
+// Failure 404 {object} models.ErrorResponse
+// Failure 500 {object} models.ErrorResponse
+// @Router /auth/login [post]
 func (authC *AuthenticationController) Login(c *gin.Context) {
 	var input user.AuthenticationInput
 	if err := c.ShouldBindJSON(&input); err != nil {
