@@ -7,12 +7,14 @@ import (
 	"strings"
 
 	"github.com/gofrs/uuid"
+	"go.uber.org/zap"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
 type AuthenticationRepo struct {
-	db *gorm.DB
+	logger *zap.Logger
+	db     *gorm.DB
 }
 
 type User struct {
@@ -74,6 +76,9 @@ func (repo *AuthenticationRepo) FindUserById(id uuid.UUID) (User, error) {
 }
 
 // DI
-func NewAuthenticationRepoModule(db *gorm.DB) *AuthenticationRepo {
-	return &AuthenticationRepo{db: db}
+func NewAuthenticationRepoModule(logger *zap.Logger, db *gorm.DB) *AuthenticationRepo {
+	return &AuthenticationRepo{
+		logger: logger,
+		db:     db,
+	}
 }

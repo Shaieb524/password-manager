@@ -1,6 +1,7 @@
 package accountPassword
 
 import (
+	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
 
@@ -21,5 +22,6 @@ type CachedAccountPassword struct {
 }
 
 type AccoutnPasswordRepo struct {
-	db *gorm.DB
+	logger *zap.Logger
+	db     *gorm.DB
 }

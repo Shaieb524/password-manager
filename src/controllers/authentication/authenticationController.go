@@ -8,9 +8,11 @@ import (
 	"password-manager/src/utils/helper"
 
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 type AuthenticationController struct {
+	logger   *zap.Logger
 	services *services.AuthenticationService
 }
 
@@ -33,6 +35,7 @@ type authenticationController interface {
 func (authC *AuthenticationController) Register(c *gin.Context) {
 	var input user.AuthenticationInput
 	if err := c.ShouldBindJSON(&input); err != nil {
+		authC.logger.Error("Could not parse auth input")
 		c.JSON(http.StatusOK, gin.H{"error": err.Error})
 		return
 	}
@@ -44,10 +47,12 @@ func (authC *AuthenticationController) Register(c *gin.Context) {
 
 	savedUser, err := authC.services.RegisterUser(&user)
 	if err != nil {
+		authC.logger.Error("Could not register user")
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
+	authC.logger.Info("User " + savedUser.Username + " was registered successfully!!")
 	c.JSON(http.StatusCreated, gin.H{"user": savedUser})
 }
 
@@ -103,6 +108,9 @@ func (authC *AuthenticationController) registerAuthenticationRoutes(router *gin.
 }
 
 // DI
-func NewAuthenticationControllerModule(service *services.AuthenticationService) *AuthenticationController {
-	return &AuthenticationController{services: service}
+func NewAuthenticationControllerModule(logger *zap.Logger, service *services.AuthenticationService) *AuthenticationController {
+	return &AuthenticationController{
+		logger:   logger,
+		services: service,
+	}
 }

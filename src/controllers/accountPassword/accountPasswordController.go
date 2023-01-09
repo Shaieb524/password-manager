@@ -6,9 +6,11 @@ import (
 	services "password-manager/src/services/accountPassword"
 
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 type AccountPasswordController struct {
+	logger  *zap.Logger
 	service *services.AccountPasswordService
 }
 
@@ -182,6 +184,9 @@ func (apC *AccountPasswordController) registerAccoutPasswordsRoutes(router *gin.
 }
 
 //DI
-func NewAccPasswordControllerModule(service *services.AccountPasswordService) *AccountPasswordController {
-	return &AccountPasswordController{service: service}
+func NewAccPasswordControllerModule(logger *zap.Logger, service *services.AccountPasswordService) *AccountPasswordController {
+	return &AccountPasswordController{
+		logger:  logger,
+		service: service,
+	}
 }

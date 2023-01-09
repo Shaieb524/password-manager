@@ -1,6 +1,7 @@
 package accountPassword
 
 import (
+	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
 
@@ -62,6 +63,9 @@ func (repo *AccoutnPasswordRepo) DeleteByName(serviceName string) error {
 }
 
 // DI
-func NewAccPasswordRepoModule(db *gorm.DB) *AccoutnPasswordRepo {
-	return &AccoutnPasswordRepo{db: db}
+func NewAccPasswordRepoModule(logger *zap.Logger, db *gorm.DB) *AccoutnPasswordRepo {
+	return &AccoutnPasswordRepo{
+		logger: logger,
+		db:     db,
+	}
 }

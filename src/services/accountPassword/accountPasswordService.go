@@ -4,9 +4,12 @@ import (
 	"fmt"
 	"password-manager/src/models/database/accountPassword"
 	appCache "password-manager/src/providers/appCache"
+
+	"go.uber.org/zap"
 )
 
 type AccountPasswordService struct {
+	logger *zap.Logger
 	repo   *accountPassword.AccoutnPasswordRepo
 	LCache *appCache.LocalCache
 }
@@ -58,8 +61,9 @@ func (apS *AccountPasswordService) DeleteServicePassword(serviceName string) err
 }
 
 // DI
-func NewAccPasswordServiceModule(repo *accountPassword.AccoutnPasswordRepo, lCache *appCache.LocalCache) *AccountPasswordService {
+func NewAccPasswordServiceModule(logger *zap.Logger, repo *accountPassword.AccoutnPasswordRepo, lCache *appCache.LocalCache) *AccountPasswordService {
 	return &AccountPasswordService{
+		logger: logger,
 		repo:   repo,
 		LCache: lCache,
 	}

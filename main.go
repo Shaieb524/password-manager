@@ -25,20 +25,18 @@ import (
 func main() {
 	fmt.Println("Start bitch")
 
-	tt := logger.NewLogger()
-	tt.Info("Heyyyy")
-	tt.Debug("Debuggggg")
+	logger := logger.NewLogger()
 	globalEnv := env.NewEnv()
 	db := database.NewDatabaseContext()
 	lCache := LocalCache.NewLocalCache(1 * time.Minute)
 
-	authR := userRepo.NewAuthenticationRepoModule(db)
-	authS := authService.NewAuthenticationServiceModule(authR)
-	authC := authController.NewAuthenticationControllerModule(authS)
+	authR := userRepo.NewAuthenticationRepoModule(logger, db)
+	authS := authService.NewAuthenticationServiceModule(logger, authR)
+	authC := authController.NewAuthenticationControllerModule(logger, authS)
 
-	apR := apRepo.NewAccPasswordRepoModule(db)
-	apS := apService.NewAccPasswordServiceModule(apR, lCache)
-	apCC := apController.NewAccPasswordControllerModule(apS)
+	apR := apRepo.NewAccPasswordRepoModule(logger, db)
+	apS := apService.NewAccPasswordServiceModule(logger, apR, lCache)
+	apCC := apController.NewAccPasswordControllerModule(logger, apS)
 
 	// api := web.InitAccountPasswordAPI()
 	routes.SetupRoutesAndRun(apCC, authC, globalEnv)
