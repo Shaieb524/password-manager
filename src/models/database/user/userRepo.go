@@ -7,12 +7,14 @@ import (
 	"strings"
 
 	"github.com/gofrs/uuid"
+	"go.uber.org/zap"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
 type AuthenticationRepo struct {
-	db *gorm.DB
+	logger *zap.Logger
+	db     *gorm.DB
 }
 
 type User struct {
@@ -29,20 +31,25 @@ func (repo *AuthenticationRepo) Save(user *User) (*User, error) {
 	user.Username = html.EscapeString(strings.TrimSpace(user.Username))
 	hashedPassword, err := repo.hashPassword(user.Password)
 	if err != nil {
+		repo.logger.Error("Couldn't hash user password!!")
 		return &User{}, err
 	}
 	user.Password = hashedPassword
 
 	err = repo.db.Create(&user).Error
 	if err != nil {
+		repo.logger.Error("Couldn't save user " + user.Username + " to database")
 		return &User{}, err
 	}
+
+	repo.logger.Info("Uesr " + user.Username + "was saved to DB")
 	return user, nil
 }
 
 func (repo *AuthenticationRepo) hashPassword(password string) (string, error) {
 	passwordHash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
+		repo.logger.Error("Proble hashing password")
 		return "", err
 	}
 	strHashedPw := string(passwordHash)
@@ -58,6 +65,7 @@ func (repo *AuthenticationRepo) FindUserByUsername(username string) (*User, erro
 
 	err := repo.db.Where("username=?", username).Find(&user).Error
 	if err != nil {
+		repo.logger.Error("Couldn't find user " + username + " in database")
 		return &User{}, err
 	}
 	return &user, nil
@@ -74,6 +82,9 @@ func (repo *AuthenticationRepo) FindUserById(id uuid.UUID) (User, error) {
 }
 
 // DI
-func NewAuthenticationRepoModule(db *gorm.DB) *AuthenticationRepo {
-	return &AuthenticationRepo{db: db}
+func NewAuthenticationRepoModule(logger *zap.Logger, db *gorm.DB) *AuthenticationRepo {
+	return &AuthenticationRepo{
+		logger: logger,
+		db:     db,
+	}
 }

@@ -1,16 +1,17 @@
 package authentication
 
 import (
-	"fmt"
 	"net/http"
 	"password-manager/src/models/database/user"
 	services "password-manager/src/services/authentcation"
 	"password-manager/src/utils/helper"
 
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 type AuthenticationController struct {
+	logger   *zap.Logger
 	services *services.AuthenticationService
 }
 
@@ -33,6 +34,7 @@ type authenticationController interface {
 func (authC *AuthenticationController) Register(c *gin.Context) {
 	var input user.AuthenticationInput
 	if err := c.ShouldBindJSON(&input); err != nil {
+		authC.logger.Error("Couldn't parse auth input " + c.Request.Header.Get("TransactionId"))
 		c.JSON(http.StatusOK, gin.H{"error": err.Error})
 		return
 	}
@@ -44,10 +46,12 @@ func (authC *AuthenticationController) Register(c *gin.Context) {
 
 	savedUser, err := authC.services.RegisterUser(&user)
 	if err != nil {
+		authC.logger.Error("Couldn't register user" + c.Request.Header.Get("TransactionId"))
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
+	authC.logger.Info("User " + savedUser.Username + " was registered successfully!! TransactionId : " + c.Request.Header.Get("TransactionId"))
 	c.JSON(http.StatusCreated, gin.H{"user": savedUser})
 }
 
@@ -65,30 +69,33 @@ func (authC *AuthenticationController) Register(c *gin.Context) {
 func (authC *AuthenticationController) Login(c *gin.Context) {
 	var input user.AuthenticationInput
 	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error parsing": err.Error()})
+		authC.logger.Error("Couldn't parse auth input" + c.Request.Header.Get("TransactionId"))
+		c.JSON(http.StatusBadRequest, gin.H{"error ": err.Error()})
 		return
 	}
 
 	user, err := authC.services.FindUserByName(input.UserName)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error finding user": err.Error()})
+		authC.logger.Error("Couldn't find the user" + c.Request.Header.Get("TransactionId"))
+		c.JSON(http.StatusBadRequest, gin.H{"error ": err.Error()})
 		return
 	}
 
-	fmt.Println(user.Username)
-	fmt.Println(user.Password)
 	err = authC.services.ValidatePassword(user, input.Password)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error validating pass": err.Error()})
+		authC.logger.Error("Couldn't find the user" + c.Request.Header.Get("TransactionId"))
+		c.JSON(http.StatusBadRequest, gin.H{"error ": err.Error()})
 		return
 	}
 
 	jwt, err := helper.GenerateJWT(*user)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error generating jwt": err.Error()})
+		authC.logger.Error("Couldn't generate jwt" + c.Request.Header.Get("TransactionId"))
+		c.JSON(http.StatusBadRequest, gin.H{"error ": err.Error()})
 		return
 	}
 
+	authC.logger.Info("User " + input.UserName + " logged in successfully!" + c.Request.Header.Get("TransactionId"))
 	c.JSON(http.StatusOK, gin.H{"jwt": jwt})
 }
 
@@ -103,6 +110,9 @@ func (authC *AuthenticationController) registerAuthenticationRoutes(router *gin.
 }
 
 // DI
-func NewAuthenticationControllerModule(service *services.AuthenticationService) *AuthenticationController {
-	return &AuthenticationController{services: service}
+func NewAuthenticationControllerModule(logger *zap.Logger, service *services.AuthenticationService) *AuthenticationController {
+	return &AuthenticationController{
+		logger:   logger,
+		services: service,
+	}
 }

@@ -31,6 +31,8 @@ func SetupRoutesAndRun(apC *accountPassword.AccountPasswordController, authC *au
 	docs.SwaggerInfo.BasePath = "/api/v1"
 
 	router := gin.Default()
+	router.Use(middlewares.TransactionIdGenerator())
+	router.Use(middlewares.CORSMiddleware())
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	ginSwagger.WrapHandler(swaggerFiles.Handler,

@@ -4,9 +4,12 @@ import (
 	"fmt"
 	"password-manager/src/models/database/accountPassword"
 	appCache "password-manager/src/providers/appCache"
+
+	"go.uber.org/zap"
 )
 
 type AccountPasswordService struct {
+	logger *zap.Logger
 	repo   *accountPassword.AccoutnPasswordRepo
 	LCache *appCache.LocalCache
 }
@@ -21,6 +24,7 @@ type accountPasswordService interface {
 }
 
 func (apS *AccountPasswordService) CreateAccountPassword(accPass accountPassword.AccountPasswordInputDto) (*accountPassword.AccountPasswordInputDto, error) {
+	// store in cache
 	apS.LCache.Update(accPass, 100)
 	return apS.repo.CreateAccountPassword(accPass)
 }
@@ -34,18 +38,16 @@ func (apS *AccountPasswordService) GetAppPasswordById(id string) (*accountPasswo
 }
 
 func (apS *AccountPasswordService) GetAppPasswordByServiceName(serviceName string) (interface{}, error) {
+	// first try get value from cache
+	// if not go to repo
 	cachedAccPassword, err := apS.LCache.Read(serviceName)
 	if err != nil {
 		fmt.Println("error getting from cache")
 	}
 
-	fmt.Println("cachedAccPassword : ", cachedAccPassword)
-
 	if (cachedAccPassword == accountPassword.CachedAccountPassword{}) {
-		fmt.Println("Get from repo")
 		return apS.repo.GetByServiceName(serviceName)
 	} else {
-		fmt.Println("Get from cache")
 		return &cachedAccPassword, nil
 	}
 }
@@ -59,8 +61,9 @@ func (apS *AccountPasswordService) DeleteServicePassword(serviceName string) err
 }
 
 // DI
-func NewAccPasswordServiceModule(repo *accountPassword.AccoutnPasswordRepo, lCache *appCache.LocalCache) *AccountPasswordService {
+func NewAccPasswordServiceModule(logger *zap.Logger, repo *accountPassword.AccoutnPasswordRepo, lCache *appCache.LocalCache) *AccountPasswordService {
 	return &AccountPasswordService{
+		logger: logger,
 		repo:   repo,
 		LCache: lCache,
 	}

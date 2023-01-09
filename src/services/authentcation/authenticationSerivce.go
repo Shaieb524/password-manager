@@ -2,10 +2,13 @@ package authentication
 
 import (
 	"password-manager/src/models/database/user"
+
+	"go.uber.org/zap"
 )
 
 type AuthenticationService struct {
-	repo *user.AuthenticationRepo
+	logger *zap.Logger
+	repo   *user.AuthenticationRepo
 }
 
 type authenticationService interface {
@@ -27,6 +30,9 @@ func (authS *AuthenticationService) RegisterUser(user *user.User) (*user.User, e
 }
 
 // DI
-func NewAuthenticationServiceModule(repo *user.AuthenticationRepo) *AuthenticationService {
-	return &AuthenticationService{repo: repo}
+func NewAuthenticationServiceModule(logger *zap.Logger, repo *user.AuthenticationRepo) *AuthenticationService {
+	return &AuthenticationService{
+		logger: logger,
+		repo:   repo,
+	}
 }
