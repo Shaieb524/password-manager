@@ -16,12 +16,18 @@ import (
 	"password-manager/src/providers/database"
 	"password-manager/src/routes"
 	"password-manager/src/utils/env"
+
 	// web "password-manager/src/web"
+
+	"password-manager/src/utils/logger"
 )
 
 func main() {
 	fmt.Println("Start bitch")
 
+	tt := logger.NewLogger()
+	tt.Info("Heyyyy")
+	tt.Debug("Debuggggg")
 	globalEnv := env.NewEnv()
 	db := database.NewDatabaseContext()
 	lCache := LocalCache.NewLocalCache(1 * time.Minute)
