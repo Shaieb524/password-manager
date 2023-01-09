@@ -11,8 +11,13 @@ type AccountPassword struct {
 }
 
 type AccountPasswordInputDto struct {
-	Service  string `gorm:"size:255;not null;unique" json:"service"`
-	Password string `gorm:"size:255;not null;" json:"password"`
+	Service  string `json:"service"`
+	Password string `json:"password"`
+}
+
+type CachedAccountPassword struct {
+	AccountPasswordInputDto
+	ExpireAtTimestamp int64
 }
 
 type AccoutnPasswordRepo struct {
