@@ -1,7 +1,6 @@
 package authentication
 
 import (
-	"fmt"
 	"net/http"
 	"password-manager/src/models/database/user"
 	services "password-manager/src/services/authentcation"
@@ -35,7 +34,7 @@ type authenticationController interface {
 func (authC *AuthenticationController) Register(c *gin.Context) {
 	var input user.AuthenticationInput
 	if err := c.ShouldBindJSON(&input); err != nil {
-		authC.logger.Error("Could not parse auth input")
+		authC.logger.Error("Couldn't parse auth input")
 		c.JSON(http.StatusOK, gin.H{"error": err.Error})
 		return
 	}
@@ -47,7 +46,7 @@ func (authC *AuthenticationController) Register(c *gin.Context) {
 
 	savedUser, err := authC.services.RegisterUser(&user)
 	if err != nil {
-		authC.logger.Error("Could not register user")
+		authC.logger.Error("Couldn't register user")
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -70,30 +69,33 @@ func (authC *AuthenticationController) Register(c *gin.Context) {
 func (authC *AuthenticationController) Login(c *gin.Context) {
 	var input user.AuthenticationInput
 	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error parsing": err.Error()})
+		authC.logger.Error("Couldn't parse auth input")
+		c.JSON(http.StatusBadRequest, gin.H{"error ": err.Error()})
 		return
 	}
 
 	user, err := authC.services.FindUserByName(input.UserName)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error finding user": err.Error()})
+		authC.logger.Error("Couldn't find the user")
+		c.JSON(http.StatusBadRequest, gin.H{"error ": err.Error()})
 		return
 	}
 
-	fmt.Println(user.Username)
-	fmt.Println(user.Password)
 	err = authC.services.ValidatePassword(user, input.Password)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error validating pass": err.Error()})
+		authC.logger.Error("Couldn't find the user")
+		c.JSON(http.StatusBadRequest, gin.H{"error ": err.Error()})
 		return
 	}
 
 	jwt, err := helper.GenerateJWT(*user)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error generating jwt": err.Error()})
+		authC.logger.Error("Couldn't generate jwt")
+		c.JSON(http.StatusBadRequest, gin.H{"error ": err.Error()})
 		return
 	}
 
+	authC.logger.Info("User " + input.UserName + " logged in successfully!")
 	c.JSON(http.StatusOK, gin.H{"jwt": jwt})
 }
 

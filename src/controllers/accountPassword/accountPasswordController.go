@@ -41,16 +41,19 @@ func (apC *AccountPasswordController) CreatAccountPassword(ctx *gin.Context) {
 	err := ctx.BindJSON(&accPassword)
 
 	if err != nil {
+		apC.logger.Error("Couldn't parse auth input : " + err.Error())
 		ctx.JSON(http.StatusBadRequest, gin.H{
-			"error": "Could not parse request : " + err.Error(),
+			"error": err.Error(),
 		})
 	}
 
 	if accPassword, err := apC.service.CreateAccountPassword(*accPassword); err != nil {
+		apC.logger.Error("Error creating account password : " + err.Error())
 		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"error": "Error creating item : " + err.Error(),
+			"error": err.Error(),
 		})
 	} else {
+		apC.logger.Info("Service password was created successfully")
 		ctx.JSON(http.StatusCreated, accPassword)
 	}
 }
@@ -69,10 +72,12 @@ func (apC *AccountPasswordController) CreatAccountPassword(ctx *gin.Context) {
 func (apC *AccountPasswordController) GetAllAccountsPasswords(ctx *gin.Context) {
 
 	if accPasswords, err := apC.service.GetAllAccountsPasswords(); err != nil {
+		apC.logger.Error("Error getting passwords : " + err.Error())
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"error": "Error creating item : " + err.Error(),
 		})
 	} else {
+		apC.logger.Info("Service passwords were fetched successfully")
 		ctx.JSON(http.StatusCreated, accPasswords)
 	}
 }
@@ -105,10 +110,12 @@ func (apC *AccountPasswordController) GetAppPasswordByServiceName(ctx *gin.Conte
 	accountName := ctx.Param("serviceName")
 
 	if appPassword, err := apC.service.GetAppPasswordByServiceName(accountName); err != nil {
+		apC.logger.Error("Error getting service " + accountName + " password")
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
 	} else {
+		apC.logger.Info("Service " + accountName + " password was fetched successfully")
 		ctx.JSON(http.StatusOK, appPassword)
 	}
 }
@@ -131,16 +138,19 @@ func (apC *AccountPasswordController) EditAccountPassword(ctx *gin.Context) {
 	err := ctx.BindJSON(&accPassword)
 
 	if err != nil {
+		apC.logger.Error("Couldn't parse request")
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": "Could not parse request : " + err.Error(),
 		})
 	}
 
 	if accPassword, err := apC.service.EditServicePassword(*accPassword); err != nil {
+		apC.logger.Error("Error updating service password")
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"error": "Error creating item : " + err.Error(),
 		})
 	} else {
+		apC.logger.Info("Service " + accPassword.Service + " was updated successfully")
 		ctx.JSON(http.StatusCreated, accPassword)
 	}
 }
@@ -158,13 +168,15 @@ func (apC *AccountPasswordController) EditAccountPassword(ctx *gin.Context) {
 // Failure 500 {object} models.ErrorResponse
 // @Router /accountPassword/{serviceName} [delete]
 func (apC *AccountPasswordController) DeleteServicePassword(ctx *gin.Context) {
-	accountName := ctx.Param("serviceName")
+	serviceName := ctx.Param("serviceName")
 
-	if err := apC.service.DeleteServicePassword(accountName); err != nil {
+	if err := apC.service.DeleteServicePassword(serviceName); err != nil {
+		apC.logger.Error("Couldn't delete account password")
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
 	} else {
+		apC.logger.Info("Service " + serviceName + " was deleted successfully")
 		ctx.JSON(http.StatusAccepted, "done")
 	}
 }
