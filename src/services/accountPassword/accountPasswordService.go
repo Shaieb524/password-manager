@@ -21,9 +21,7 @@ type accountPasswordService interface {
 }
 
 func (apS *AccountPasswordService) CreateAccountPassword(accPass accountPassword.AccountPasswordInputDto) (*accountPassword.AccountPasswordInputDto, error) {
-	// apS.AppCache.Set(accPass.Service,
-	// 	accountPassword.AccountPasswordInputDto{Service: accPass.Service, Password: accPass.Password}, 5*time.Minute)
-	apS.LCache.Update(accPass, 10)
+	apS.LCache.Update(accPass, 100)
 	return apS.repo.CreateAccountPassword(accPass)
 }
 
@@ -41,10 +39,14 @@ func (apS *AccountPasswordService) GetAppPasswordByServiceName(serviceName strin
 		fmt.Println("error getting from cache")
 	}
 
-	if &cachedAccPassword != nil {
-		return &cachedAccPassword, nil
-	} else {
+	fmt.Println("cachedAccPassword : ", cachedAccPassword)
+
+	if (cachedAccPassword == accountPassword.CachedAccountPassword{}) {
+		fmt.Println("Get from repo")
 		return apS.repo.GetByServiceName(serviceName)
+	} else {
+		fmt.Println("Get from cache")
+		return &cachedAccPassword, nil
 	}
 }
 

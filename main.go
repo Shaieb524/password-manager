@@ -24,7 +24,7 @@ func main() {
 
 	globalEnv := env.NewEnv()
 	db := database.NewDatabaseContext()
-	lCache := LocalCache.NewLocalCache(20 * time.Minute)
+	lCache := LocalCache.NewLocalCache(1 * time.Minute)
 
 	authR := userRepo.NewAuthenticationRepoModule(db)
 	authS := authService.NewAuthenticationServiceModule(authR)
