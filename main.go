@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	authController "password-manager/src/controllers/authentication"
 	userRepo "password-manager/src/models/database/user"
@@ -11,6 +12,7 @@ import (
 	apRepo "password-manager/src/models/database/accountPassword"
 	apService "password-manager/src/services/accountPassword"
 
+	LocalCache "password-manager/src/providers/appCache"
 	"password-manager/src/providers/database"
 	"password-manager/src/routes"
 	"password-manager/src/utils/env"
@@ -22,13 +24,14 @@ func main() {
 
 	globalEnv := env.NewEnv()
 	db := database.NewDatabaseContext()
+	lCache := LocalCache.NewLocalCache(1 * time.Minute)
 
 	authR := userRepo.NewAuthenticationRepoModule(db)
 	authS := authService.NewAuthenticationServiceModule(authR)
 	authC := authController.NewAuthenticationControllerModule(authS)
 
 	apR := apRepo.NewAccPasswordRepoModule(db)
-	apS := apService.NewAccPasswordServiceModule(apR)
+	apS := apService.NewAccPasswordServiceModule(apR, lCache)
 	apCC := apController.NewAccPasswordControllerModule(apS)
 
 	// api := web.InitAccountPasswordAPI()

@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS account_passwrods (id text,
+CREATE TABLE IF NOT EXISTS account_passwords (id text,
 	service text,
 	password text,
 	created_at date,
