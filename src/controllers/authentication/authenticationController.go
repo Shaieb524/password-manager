@@ -34,7 +34,7 @@ type authenticationController interface {
 func (authC *AuthenticationController) Register(c *gin.Context) {
 	var input user.AuthenticationInput
 	if err := c.ShouldBindJSON(&input); err != nil {
-		authC.logger.Error("Couldn't parse auth input")
+		authC.logger.Error("Couldn't parse auth input " + c.Request.Header.Get("TransactionId"))
 		c.JSON(http.StatusOK, gin.H{"error": err.Error})
 		return
 	}
@@ -46,12 +46,12 @@ func (authC *AuthenticationController) Register(c *gin.Context) {
 
 	savedUser, err := authC.services.RegisterUser(&user)
 	if err != nil {
-		authC.logger.Error("Couldn't register user")
+		authC.logger.Error("Couldn't register user" + c.Request.Header.Get("TransactionId"))
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	authC.logger.Info("User " + savedUser.Username + " was registered successfully!!")
+	authC.logger.Info("User " + savedUser.Username + " was registered successfully!! TransactionId : " + c.Request.Header.Get("TransactionId"))
 	c.JSON(http.StatusCreated, gin.H{"user": savedUser})
 }
 
@@ -69,33 +69,33 @@ func (authC *AuthenticationController) Register(c *gin.Context) {
 func (authC *AuthenticationController) Login(c *gin.Context) {
 	var input user.AuthenticationInput
 	if err := c.ShouldBindJSON(&input); err != nil {
-		authC.logger.Error("Couldn't parse auth input")
+		authC.logger.Error("Couldn't parse auth input" + c.Request.Header.Get("TransactionId"))
 		c.JSON(http.StatusBadRequest, gin.H{"error ": err.Error()})
 		return
 	}
 
 	user, err := authC.services.FindUserByName(input.UserName)
 	if err != nil {
-		authC.logger.Error("Couldn't find the user")
+		authC.logger.Error("Couldn't find the user" + c.Request.Header.Get("TransactionId"))
 		c.JSON(http.StatusBadRequest, gin.H{"error ": err.Error()})
 		return
 	}
 
 	err = authC.services.ValidatePassword(user, input.Password)
 	if err != nil {
-		authC.logger.Error("Couldn't find the user")
+		authC.logger.Error("Couldn't find the user" + c.Request.Header.Get("TransactionId"))
 		c.JSON(http.StatusBadRequest, gin.H{"error ": err.Error()})
 		return
 	}
 
 	jwt, err := helper.GenerateJWT(*user)
 	if err != nil {
-		authC.logger.Error("Couldn't generate jwt")
+		authC.logger.Error("Couldn't generate jwt" + c.Request.Header.Get("TransactionId"))
 		c.JSON(http.StatusBadRequest, gin.H{"error ": err.Error()})
 		return
 	}
 
-	authC.logger.Info("User " + input.UserName + " logged in successfully!")
+	authC.logger.Info("User " + input.UserName + " logged in successfully!" + c.Request.Header.Get("TransactionId"))
 	c.JSON(http.StatusOK, gin.H{"jwt": jwt})
 }
 
