@@ -1,0 +1,17 @@
+FROM golang:1.18-buster AS build
+
+WORKDIR /app
+
+COPY go.mod .
+COPY go.sum .
+
+RUN go mod tidy
+RUN go mod download
+
+COPY . .
+
+RUN go build -o ./out/go-psmn .
+
+EXPOSE 8080
+
+ENTRYPOINT ["./out/go-psmn"]

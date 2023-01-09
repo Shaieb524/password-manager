@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"time"
 
 	authController "password-manager/src/controllers/authentication"
@@ -23,8 +22,6 @@ import (
 )
 
 func main() {
-	fmt.Println("Start bitch")
-
 	logger := logger.NewLogger()
 	globalEnv := env.NewEnv()
 	db := database.NewDatabaseContext()
